@@ -1,5 +1,7 @@
+import { ChevronDown } from 'lucide-react'
 import { MotionConfig } from 'motion/react'
 import { useState } from 'react'
+import { Button } from '@/components/ui/button'
 import { Toaster } from '@/components/ui/sonner'
 import { TooltipProvider } from '@/components/ui/tooltip'
 import { ProgressRing } from '@/components/ProgressRing'
@@ -8,10 +10,12 @@ import { QuizCard } from '@/features/tasks/components/QuizCard'
 import { TaskInput } from '@/features/tasks/components/TaskInput'
 import { TaskList } from '@/features/tasks/components/TaskList'
 import { useTasks } from '@/features/tasks/useTasks'
+import { cn } from '@/lib/utils'
 
 export default function App() {
   const { tasks, current, add, answer, next, remove, restore } = useTasks()
   const [round, setRound] = useState(0)
+  const [listOpen, setListOpen] = useState(false)
   const doneCount = tasks.filter((t) => t.done).length
   const today = new Intl.DateTimeFormat('de-CH', {
     weekday: 'long',
@@ -53,8 +57,26 @@ export default function App() {
           )}
           {tasks.length === 0 && <EmptyState />}
           <section className="flex flex-col gap-4">
-            {tasks.length > 0 && <h2 className="font-heading text-lg">Alle Aussagen</h2>}
-            <TaskList tasks={tasks} onRemove={remove} onRestore={restore} />
+            {tasks.length > 0 && (
+              <Button
+                variant="secondary"
+                aria-expanded={listOpen}
+                aria-controls="all-statements"
+                onClick={() => setListOpen((open) => !open)}
+                className="h-11 self-start rounded-xl px-4 transition-look"
+              >
+                <ChevronDown
+                  className={cn('size-4 transition-look', listOpen && 'rotate-180')}
+                  aria-hidden
+                />
+                {listOpen ? 'Alle Aussagen ausblenden' : 'Alle Aussagen anzeigen'}
+              </Button>
+            )}
+            {listOpen && (
+              <div id="all-statements">
+                <TaskList tasks={tasks} onRemove={remove} onRestore={restore} />
+              </div>
+            )}
           </section>
         </main>
         <Toaster position="bottom-center" richColors closeButton />

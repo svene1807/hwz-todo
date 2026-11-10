@@ -16,13 +16,14 @@ describe('TaskInput', () => {
 
     await user.click(screen.getByRole('button', { name: 'Falsch', pressed: false }))
     await user.type(input, 'Spinnen haben sechs Beine{Enter}')
+    expect(input).toHaveValue('')
+    expect(input).toHaveFocus()
 
+    await user.click(screen.getByRole('button', { name: 'Alle Aussagen anzeigen' }))
     const first = listItems()[0]
     expect(first).toHaveTextContent('Spinnen haben sechs Beine')
     expect(first).toHaveTextContent('Falsch')
     expect(listItems()).toHaveLength(21)
-    expect(input).toHaveValue('')
-    expect(input).toHaveFocus()
   })
 
   it('does not add an empty statement and shakes the form', async () => {
@@ -33,7 +34,7 @@ describe('TaskInput', () => {
 
     await user.type(input, '   {Enter}')
 
-    expect(listItems()).toHaveLength(0)
+    expect(screen.queryAllByRole('listitem')).toHaveLength(0)
     expect(input.closest('form')).toHaveClass('animate-shake')
     expect(input).toHaveFocus()
   })

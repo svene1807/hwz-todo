@@ -13,7 +13,7 @@ Ich will Aussagen mit «Wahr» oder «Falsch» beantworten, sofort sehen, ob ich
 - Abfrage: Eine Aussage nach der anderen, mit den Knöpfen «Wahr» und «Falsch».
 - Sofortige Rückmeldung: «Richtig» oder «Falsch», bei Falsch mit der richtigen Lösung.
 - Falsch beantwortete Aussagen kommen früher und häufiger wieder als richtig beantwortete.
-- Aussage löschen, mit «Rückgängig». Zähler «sitzt/gesamt» als Fortschrittsring. Eine Aussage sitzt, wenn die letzte Antwort darauf richtig war.
+- Die Liste aller Aussagen ist eingeklappt, damit man die Lösungen nicht vorher sieht. Dort Aussage löschen, mit «Rückgängig». Zähler «sitzt/gesamt» als Fortschrittsring. Eine Aussage sitzt, wenn die letzte Antwort darauf richtig war.
 
 ## Look
 
@@ -71,6 +71,10 @@ Aurora
     - Gegeben: Eine Aussage wird abgefragt.
     - Wenn: Ich nur mit Tab, Enter und Leertaste arbeite.
     - Dann: Ich kann «Wahr», «Falsch» und «Weiter» erreichen und auslösen, der Fokus ist immer sichtbar.
+12. Lösungen verborgen
+    - Gegeben: Es gibt Aussagen und ich öffne die App.
+    - Wenn: Die Seite geladen ist.
+    - Dann: Keine Aussage und keine Lösung aus der Liste ist sichtbar, nur der Knopf «Alle Aussagen anzeigen»; ein Klick darauf öffnet die Liste, ein zweiter schliesst sie.
 
 ## Features
 

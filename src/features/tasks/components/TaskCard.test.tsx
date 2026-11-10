@@ -14,12 +14,35 @@ function makeTask(id: string, title: string, isTrue: boolean): Task {
   return { id, title, isTrue, done: false, lastAnsweredAt: null, createdAt: 0 }
 }
 
+async function openList(user: ReturnType<typeof userEvent.setup>) {
+  await user.click(screen.getByRole('button', { name: 'Alle Aussagen anzeigen' }))
+}
+
 function listItems() {
   return within(screen.getByRole('list', { name: 'Alle Aussagen' })).getAllByRole('listitem')
 }
 
 describe('TaskList and TaskCard', () => {
-  it('shows the saved statements with their solution', () => {
+  it('hides the statements and their solutions until the list is opened', async () => {
+    const user = userEvent.setup()
+    saveState({ version: CURRENT_VERSION, tasks: [makeTask('a', 'Spinnen sind Insekten.', false)] })
+    render(<App />)
+
+    const toggle = screen.getByRole('button', { name: 'Alle Aussagen anzeigen' })
+    expect(toggle).toHaveAttribute('aria-expanded', 'false')
+    expect(screen.queryByRole('list', { name: 'Alle Aussagen' })).not.toBeInTheDocument()
+
+    await user.click(toggle)
+    expect(toggle).toHaveAttribute('aria-expanded', 'true')
+    expect(toggle).toHaveAccessibleName('Alle Aussagen ausblenden')
+    expect(listItems()).toHaveLength(1)
+
+    await user.click(toggle)
+    expect(screen.queryByRole('list', { name: 'Alle Aussagen' })).not.toBeInTheDocument()
+  })
+
+  it('shows the saved statements with their solution', async () => {
+    const user = userEvent.setup()
     saveState({
       version: CURRENT_VERSION,
       tasks: [
@@ -28,6 +51,7 @@ describe('TaskList and TaskCard', () => {
       ],
     })
     render(<App />)
+    await openList(user)
     const items = listItems()
     expect(items).toHaveLength(2)
     expect(items[0]).toHaveTextContent('Spinnen sind Insekten.')
@@ -36,9 +60,11 @@ describe('TaskList and TaskCard', () => {
     expect(items[1]).toHaveTextContent('Wahr')
   })
 
-  it('breaks a long word inside the card', () => {
+  it('breaks a long word inside the card', async () => {
+    const user = userEvent.setup()
     saveState({ version: CURRENT_VERSION, tasks: [makeTask('a', 'x'.repeat(200), true)] })
     render(<App />)
+    await openList(user)
     expect(
       within(screen.getByRole('list', { name: 'Alle Aussagen' })).getByText('x'.repeat(200)),
     ).toHaveClass('break-words')
@@ -55,6 +81,7 @@ describe('TaskList and TaskCard', () => {
       ],
     })
     render(<App />)
+    await openList(user)
 
     await user.click(screen.getByRole('button', { name: '«Zwei» löschen' }))
     expect(await screen.findByText('Aussage gelöscht')).toBeInTheDocument()
