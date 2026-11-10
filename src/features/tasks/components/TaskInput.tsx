@@ -1,23 +1,26 @@
 import { Plus } from 'lucide-react'
-import { type FormEvent, type KeyboardEvent, useCallback, useRef, useState } from 'react'
+import { type FormEvent, type KeyboardEvent, useCallback, useEffect, useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { MAX_TITLE_LENGTH } from '@/features/tasks/model'
-import { useHotkey } from '@/lib/useHotkey'
 import { cn } from '@/lib/utils'
 
 type TaskInputProps = {
   onAdd: (title: string, isTrue: boolean) => void
+  focusRequest?: number // increase to move the focus into the field
 }
 
-export function TaskInput({ onAdd }: TaskInputProps) {
+export function TaskInput({ onAdd, focusRequest = 0 }: TaskInputProps) {
   const [title, setTitle] = useState('')
   const [isTrue, setIsTrue] = useState(true)
   const [shaking, setShaking] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
 
   const focusInput = useCallback(() => inputRef.current?.focus(), [])
-  useHotkey('n', focusInput)
+
+  useEffect(() => {
+    if (focusRequest > 0) focusInput()
+  }, [focusRequest, focusInput])
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()

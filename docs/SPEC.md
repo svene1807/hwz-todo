@@ -78,4 +78,35 @@ Aurora
 
 ## Features
 
-(leer)
+### F1: Tabs «Quiz-Modus» und «Fragenübersicht»
+
+Üben und Verwalten sind getrennt: Im Quiz sieht man nur die aktuelle Aussage, in der Übersicht alle Aussagen mit Lösung, Eingabe und Löschen. Die Tabs ersetzen den Knopf «Alle Aussagen anzeigen» aus Kriterium 12; die Lösungen bleiben verborgen, solange der Tab «Quiz-Modus» offen ist.
+
+1. Start im Quiz
+   - Gegeben: Es gibt Aussagen.
+   - Wenn: Ich die App öffne oder neu lade.
+   - Dann: Der Tab «Quiz-Modus» ist ausgewählt, die Abfrage «Stimmt das?» ist sichtbar; Eingabefeld, Liste und Lösungen aus der Liste sind nicht sichtbar.
+2. Zur Übersicht wechseln
+   - Gegeben: Der Tab «Quiz-Modus» ist offen.
+   - Wenn: Ich auf «Fragenübersicht» klicke.
+   - Dann: Das Eingabefeld und die Liste aller Aussagen mit ihren Badges «Wahr»/«Falsch» und Löschen-Knöpfen sind sofort sichtbar, ohne weiteren Klick; die Abfrage ist nicht sichtbar.
+3. Anlegen in der Übersicht
+   - Gegeben: Der Tab «Fragenübersicht» ist offen.
+   - Wenn: Ich eine Aussage anlege und zu «Quiz-Modus» wechsle.
+   - Dann: Die Aussage steht oben in der Liste, und der Ring zeigt eine Aussage mehr im Gesamtwert.
+4. Fortschritt bleibt beim Wechsel
+   - Gegeben: Ich habe im Quiz eine Aussage beantwortet und die Rückmeldung «Richtig» oder «Falsch» ist sichtbar.
+   - Wenn: Ich zur «Fragenübersicht» und zurück wechsle.
+   - Dann: Die Antwort ist gespeichert, der Ring zeigt denselben Stand und die Abfrage geht ohne Fehler weiter.
+5. Taste N
+   - Gegeben: Der Tab «Quiz-Modus» ist offen und der Fokus ist in keinem Eingabefeld.
+   - Wenn: Ich N drücke.
+   - Dann: Der Tab «Fragenübersicht» öffnet sich und der Fokus steht im Eingabefeld.
+6. Tastatur
+   - Gegeben: Der Fokus steht auf einem Tab.
+   - Wenn: Ich die Pfeiltasten links/rechts drücke.
+   - Dann: Der andere Tab wird ausgewählt, sein Inhalt erscheint und der Fokus ist sichtbar.
+7. Schmales Fenster
+   - Gegeben: Das Fenster ist 360 px breit.
+   - Wenn: Ich zwischen den Tabs wechsle.
+   - Dann: Beide Tabs stehen nebeneinander, sind mindestens 44 px hoch und nichts scrollt seitlich.

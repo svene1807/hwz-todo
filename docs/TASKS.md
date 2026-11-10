@@ -50,3 +50,15 @@ Format je Task:
 - Dateien: src/components/ProgressRing.tsx, src/components/ProgressRing.test.tsx, src/features/tasks/components/EmptyState.tsx, src/App.tsx.
 - Test zuerst: Ring hat aria-label «1 von 2 sitzen»; leere Liste zeigt «Keine Aussagen mehr. Zeit für Kaffee.».
 - Fertig wenn: Zähler-Teil von «Richtig beantworten» und «Schmales Fenster» erfüllt (DESIGN.md, Rezepte 1, 5 und 8), npm run check grün.
+
+[x] 7  Tabs Quiz-Modus und Fragenübersicht
+- Ziel: Die App startet im Tab «Quiz-Modus» mit der Abfrage; der Tab «Fragenübersicht» zeigt Eingabe und Liste mit Lösungen direkt, der Knopf «Alle Aussagen anzeigen» fällt weg.
+- Dateien: src/components/ui/tabs.tsx (per npx shadcn add tabs --yes), src/App.tsx, src/App.test.tsx, src/features/tasks/components/TaskInput.test.tsx, src/features/tasks/components/TaskCard.test.tsx.
+- Test zuerst: Beim Start ist «Quiz-Modus» ausgewählt und keine Liste sichtbar; Klick auf «Fragenübersicht» zeigt Eingabe und Liste mit «Wahr»/«Falsch»; Pfeil rechts auf dem Tab wählt «Fragenübersicht».
+- Fertig wenn: F1 «Start im Quiz», «Zur Übersicht wechseln», «Tastatur» und «Schmales Fenster» erfüllt, npm run check grün.
+
+[x] 8  Taste N und Stand beim Tab-Wechsel
+- Ziel: N öffnet die Fragenübersicht mit Fokus im Feld, neue Aussagen zählen im Ring, und eine beantwortete Abfrage bleibt beim Wechsel erhalten.
+- Dateien: src/App.tsx, src/App.test.tsx, src/features/tasks/components/TaskInput.tsx, src/features/tasks/components/TaskInput.test.tsx.
+- Test zuerst: N im Quiz öffnet «Fragenübersicht» und das Feld hat Fokus; Aussage anlegen und zurück zum Quiz erhöht den Ring-Gesamtwert um 1; nach «Richtig» zur Übersicht und zurück ist «Richtig» noch sichtbar.
+- Fertig wenn: F1 «Anlegen in der Übersicht», «Fortschritt bleibt beim Wechsel» und «Taste N» erfüllt, npm run check grün.

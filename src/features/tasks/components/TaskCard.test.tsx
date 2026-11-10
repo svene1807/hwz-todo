@@ -15,7 +15,7 @@ function makeTask(id: string, title: string, isTrue: boolean): Task {
 }
 
 async function openList(user: ReturnType<typeof userEvent.setup>) {
-  await user.click(screen.getByRole('button', { name: 'Alle Aussagen anzeigen' }))
+  await user.click(screen.getByRole('tab', { name: 'Fragenübersicht' }))
 }
 
 function listItems() {
@@ -23,21 +23,20 @@ function listItems() {
 }
 
 describe('TaskList and TaskCard', () => {
-  it('hides the statements and their solutions until the list is opened', async () => {
+  it('hides the statements and their solutions until the overview tab is opened', async () => {
     const user = userEvent.setup()
     saveState({ version: CURRENT_VERSION, tasks: [makeTask('a', 'Spinnen sind Insekten.', false)] })
     render(<App />)
 
-    const toggle = screen.getByRole('button', { name: 'Alle Aussagen anzeigen' })
-    expect(toggle).toHaveAttribute('aria-expanded', 'false')
+    const overview = screen.getByRole('tab', { name: 'Fragenübersicht' })
+    expect(overview).toHaveAttribute('aria-selected', 'false')
     expect(screen.queryByRole('list', { name: 'Alle Aussagen' })).not.toBeInTheDocument()
 
-    await user.click(toggle)
-    expect(toggle).toHaveAttribute('aria-expanded', 'true')
-    expect(toggle).toHaveAccessibleName('Alle Aussagen ausblenden')
+    await openList(user)
+    expect(overview).toHaveAttribute('aria-selected', 'true')
     expect(listItems()).toHaveLength(1)
 
-    await user.click(toggle)
+    await user.click(screen.getByRole('tab', { name: 'Quiz-Modus' }))
     expect(screen.queryByRole('list', { name: 'Alle Aussagen' })).not.toBeInTheDocument()
   })
 

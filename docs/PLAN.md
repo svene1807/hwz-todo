@@ -31,6 +31,14 @@ Eine «Task» ist in dieser App eine Aussage. Ordner und Dateinamen bleiben wie 
 - `src/lib/theme.ts`: readConfettiColors liest die Look-Farben aus CSS-Variablen.
 - `src/App.tsx`: Rahmen mit Hero «Wahr oder Falsch?», Ring, Eingabe, Abfrage und Liste.
 
+### F1: Tabs
+
+- `src/components/ui/tabs.tsx`: shadcn-Baustein Tabs, neu per `npx shadcn add tabs --yes` (nutzt das schon installierte `radix-ui`, kein neues npm-Paket).
+- `src/App.tsx`: Tabs «Quiz-Modus» (Abfrage oder leerer Zustand) und «Fragenübersicht» (Eingabe und Liste); Knopf «Alle Aussagen anzeigen» fällt weg; Taste N wechselt zur Übersicht.
+- `src/App.test.tsx`: Tests für Start im Quiz, Wechsel, Pfeiltasten und Taste N.
+- `src/features/tasks/components/TaskInput.tsx`: Taste N wandert in App.tsx, das Feld bekommt `autoFocus`, wenn es über N geöffnet wird.
+- `src/features/tasks/components/TaskInput.test.tsx`, `src/features/tasks/components/TaskCard.test.tsx`: öffnen die Liste über den Tab statt über den Knopf.
+
 ## Datenmodell
 
 ```ts
@@ -52,6 +60,10 @@ export type Task = {
 - Beispiel-Aussagen nur, wenn noch nichts gespeichert ist (`hasSavedState()` ist falsch). Wer alle löscht, bekommt sie nicht zurück.
 - Erste Version dieser App, darum keine Migration. Ändert sich das Modell später: `CURRENT_VERSION` erhöhen und Migration mit Test (docs/STACK.md, «Datenhaltung»).
 
+### F1: Tabs
+
+Keine Änderung am Datenmodell, `version: 1` bleibt, keine Migration. Der gewählte Tab wird nicht gespeichert: Nach dem Neuladen ist immer «Quiz-Modus» offen.
+
 ## Komponenten
 
 - **App-Rahmen:** Hero «Wahr oder Falsch?» mit Datum und Fortschrittsring rechts (DESIGN.md, Rezept 1).
@@ -61,8 +73,17 @@ export type Task = {
 - **TaskList / TaskCard:** alle Aussagen, neue oben, mit Badge «Wahr»/«Falsch», «sitzt»-Markierung und Löschen mit Toast «Rückgängig» (DESIGN.md, Rezepte 3, 4 und 7).
 - **EmptyState:** Mond-Illustration mit «Keine Aussagen mehr. Zeit für Kaffee.» und «Tippe oben eine neue Aussage ein oder drücke N.» (DESIGN.md, Rezept 5).
 
+### F1: Tabs
+
+- **Tabs (shadcn):** `TabsList` als `grid grid-cols-2` mit zwei `TabsTrigger` (`h-11`), «Quiz-Modus» und «Fragenübersicht»; Pfeiltasten und Fokus liefert Radix (DESIGN.md, Rezepte 8 und 9). Die Abfrage bleibt beim Wechsel gemountet (`forceMount`, inaktiv `hidden`), damit Rückmeldung und Stand erhalten bleiben.
+
 ## Risiken
 
 - Die Rezepte sind für eine Aufgabenliste geschrieben (Checkbox, «Aufgabe»): Klassen und Verhalten werden wörtlich übernommen, nur die Checkbox wird durch Wahr/Falsch-Knöpfe ersetzt und sichtbare Wörter heissen «Aussage».
 - Die Wiederholungs-Reihenfolge stimmt bei mehreren Fehlern nicht: nextTask ist eine reine Funktion mit Tests für drei Fehler hintereinander.
 - Der Typ Task hat mehr Felder als das Beispiel in docs/STACK.md: loadState prüft jedes Feld und gibt bei falscher Form eine leere Liste zurück, mit Test.
+
+### F1: Tabs
+
+- Der Inhalt des inaktiven Tabs wird von Radix entfernt und die Abfrage verliert ihre Rückmeldung: Quiz-Inhalt mit `forceMount` und `data-[state=inactive]:hidden`, Test «Fortschritt bleibt beim Wechsel».
+- Taste N findet das Feld nicht, solange die Übersicht zu ist: App wechselt zuerst den Tab, das Feld fokussiert sich danach selbst, mit Test.
